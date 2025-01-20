@@ -1,24 +1,54 @@
 import java.util.*;
 
 public class Level {
-    private List<Character> availableLetters;
+    private final int LEVEL_WORD_LENGTH = new Random().nextInt(4) + 1;
+
+    private Map<Character, Integer> availableCharacters;
+    private List<String> selectedWords;
     private List<String> correctWords;
 
-    public Level(List<Character> availableLetters, List<String> words) {
-        this.availableLetters = availableLetters;
-        this.correctWords = words;
+    public Level(Dictionary dictionary) {
+        try {
+            String randomWord = dictionary.selectRandomWord();
+
+            this.availableCharacters = dictionary.getCharAmount(randomWord);
+            this.correctWords = dictionary.findSubWords(randomWord);
+
+            this.selectedWords = new ArrayList<>();
+            this.selectedWords.add(randomWord);
+
+
+            for (int i = 0; i <= LEVEL_WORD_LENGTH; i++) {
+                int index = new Random().nextInt(correctWords.size());
+                if (!selectedWords.contains(correctWords.get(index))) {
+                    selectedWords.add(correctWords.get(index));
+                }
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Erro a criar o nível: " + e.getMessage());
+        }
     }
 
-    public boolean checkWord(String word) {
+    public boolean isSelectedWord(String word) {
+        return selectedWords.contains(word);
+    }
+
+    public boolean isCorrectWord(String word) {
         return correctWords.contains(word);
     }
 
-    public List<Character> getAvailableLetters() {
-        return availableLetters;
+    public Map<Character, Integer> getAvailableCharacters() {
+        return availableCharacters;
     }
 
     public List<String> getCorrectWords() {
         return correctWords;
     }
+
+    public List<String> getSelectedWords() {
+        return selectedWords;
+    }
+
 }
 

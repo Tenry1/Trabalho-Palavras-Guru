@@ -23,6 +23,10 @@ public class Dictionary {
         }
     }
 
+    public List<String> getWords() {
+        return words;
+    }
+
     public String selectRandomWord() {
         Random random = new Random();
         return words.get(random.nextInt(words.size()));
@@ -33,14 +37,14 @@ public class Dictionary {
         Map<Character, Integer> wordCharAmount = getCharAmount(word);
 
         for (String w : words) {
-            if (canFormWord(wordCharAmount, w)) {
+            if (isSubWord(wordCharAmount, w)) {
                 result.add(w);
             }
         }
         return result;
     }
 
-    private Map<Character, Integer> getCharAmount(String word) {
+    public Map<Character, Integer> getCharAmount(String word) {
         Map<Character, Integer> charAmount = new HashMap<>();
         for (char c : word.toCharArray()) {
             charAmount.put(c, charAmount.getOrDefault(c, 0) + 1);
@@ -48,7 +52,7 @@ public class Dictionary {
         return charAmount;
     }
 
-    private boolean canFormWord(Map<Character, Integer> wordCharAmount, String w) {
+    private boolean isSubWord(Map<Character, Integer> wordCharAmount, String w) {
         Map<Character, Integer> wCharAmount = getCharAmount(w);
         for (Map.Entry<Character, Integer> entry : wCharAmount.entrySet()) {
             if (wordCharAmount.getOrDefault(entry.getKey(), 0) < entry.getValue()) {
@@ -58,17 +62,4 @@ public class Dictionary {
         return true;
     }
 
-    public static void main(String[] args) {
-        try {
-            Dictionary dictionary = new Dictionary("src/portuguese-large.txt");
-            String randomWord = dictionary.selectRandomWord();
-            System.out.println("Selected word: " + randomWord);
-            List<String> subWords = dictionary.findSubWords(randomWord);
-            System.out.println("Sub-words: " + subWords);
-        } catch (FileNotFoundException e) {
-            System.err.println("Error: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
-        }
-    }
 }
