@@ -75,8 +75,13 @@ public class Level_gen implements Level_interface {
     }
 
     @Override
-    public String getWordRepresentation(String word) {
-        return "_ ".repeat(word.length()).trim(); // Exemplo: "AR" -> "_ _"
+    public String getWordRepresentation(String word, List<String> guessedWords) {
+        // Se a palavra já foi adivinhada, retorna a palavra completa
+        if (guessedWords.contains(word.toUpperCase())) {
+            return word.toUpperCase();
+        }
+        // Caso contrário, retorna a representação com underscores
+        return "_ ".repeat(word.length()).trim();
     }
 
     // Metodo auxiliar para contar os caracteres de uma palavra (ignorando espaços)

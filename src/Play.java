@@ -62,17 +62,6 @@ public class Play {
             int levelNumber = entry.getKey();
             Level_interface level = entry.getValue();
 
-            // Exibe informações do nível
-            System.out.println("Nível " + levelNumber + ":");
-            System.out.println("Letras disponíveis: " + level.getAvailableLetters());
-            System.out.println("Palavras:");
-            for (String word : level.getSelectedWords()) {
-                System.out.println(level.getWordRepresentation(word));
-            }
-
-            // Debug: Exibe as palavras que o jogador deve adivinhar
-            System.out.println(level.getSelectedWords());
-
             // Limpa a lista de palavras adivinhadas antes de iniciar o nível
             game.getGuessedWords().clear(); // Limpa a lista antes de cada nível
 
@@ -94,10 +83,8 @@ public class Play {
 
         if (completedLevels == totalLevels) {
             System.out.println("Todos os níveis foram concluídos! Parabéns!");
-            //game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo
         } else {
             System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
-            //game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo - mesmo que inacabado
         }
     }
 

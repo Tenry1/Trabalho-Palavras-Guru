@@ -6,7 +6,7 @@ public class Level_prefab implements Level_interface {
     private final List<String> selectedWords;
     private final List<String> correctWords;
 
-    // Construtor privado para forçar o uso do método estático
+    // Construtor privado para forçar o uso do metodo estático
     private Level_prefab(Map<Character, Integer> availableCharacters, List<Character> availableLettersOrder, List<String> selectedWords, List<String> correctWords) {
         this.availableCharacters = availableCharacters;
         this.availableLettersOrder = availableLettersOrder;
@@ -14,7 +14,7 @@ public class Level_prefab implements Level_interface {
         this.correctWords = correctWords;
     }
 
-    // Método estático para criar um Level a partir de uma lista de palavras
+    // Metodo estático para criar um Level a partir de uma lista de palavras
     public static Level_prefab createFromWords(List<String> words) {
         if (words == null || words.isEmpty()) {
             throw new IllegalArgumentException("A lista de palavras não pode estar vazia.");
@@ -42,7 +42,7 @@ public class Level_prefab implements Level_interface {
         return new Level_prefab(availableCharacters, availableLettersOrder, selectedWords, correctWords);
     }
 
-    // Método auxiliar para contar os caracteres de uma palavra (ignorando espaços)
+    // Metodo auxiliar para contar os caracteres de uma palavra (ignorando espaços)
     private static Map<Character, Integer> getCharAmount(String word) {
         Map<Character, Integer> charCount = new HashMap<>();
         for (char c : word.toCharArray()) {
@@ -66,8 +66,13 @@ public class Level_prefab implements Level_interface {
     }
 
     @Override
-    public String getWordRepresentation(String word) {
-        return "_ ".repeat(word.length()).trim(); // Exemplo: "AR" -> "_ _"
+    public String getWordRepresentation(String word, List<String> guessedWords) {
+        // Se a palavra já foi adivinhada, retorna a palavra completa
+        if (guessedWords.contains(word.toUpperCase())) {
+            return word.toUpperCase();
+        }
+        // Caso contrário, retorna a representação com underscores
+        return "_ ".repeat(word.length()).trim();
     }
 
     @Override

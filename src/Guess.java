@@ -41,21 +41,33 @@ public class Guess {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            // Verifica se o nível foi concluído após cada tentativa
+            // Check if the level is completed
             if (hasCompletedLevel()) {
                 System.out.println("Você adivinhou todas as palavras! Nível concluído!");
                 return true; // Nível concluído
             }
 
-            System.out.print("Digite uma palavra \n(pressione 'Enter' para voltar ao menu)\n(pressione 'T' para uma dica): ");
-            String input = sc.nextLine().trim().toUpperCase(); // Converte para maiúsculas
+            // Display level information
+            System.out.println("Nível " + game.getCurrentLevel() + ":");
+            System.out.println("Letras disponíveis: " + level.getAvailableLetters());
+            System.out.println("Palavras:");
+            for (String word : level.getSelectedWords()) {
+                System.out.println(level.getWordRepresentation(word, game.getGuessedWords()));
+            }
+            // Debug: Exibe as palavras que o jogador deve adivinhar
+            System.out.println(level.getSelectedWords());
 
+            // Prompt the user for input
+            System.out.print("Digite uma palavra \n(pressione 'Enter' para voltar ao menu)\n(pressione 'T' para uma dica): ");
+            String input = sc.nextLine().trim().toUpperCase(); // Convert input to uppercase
+
+            // Check if the user requested a hint
             if (input.equals("T")) {
                 askForHint();
                 continue;
             }
 
-            // Se o input estiver vazio (usuário pressionou Enter)
+            // Handle empty input (Enter key pressed)
             if (input.isEmpty()) {
                 if (hasCompletedLevel()) {
                     System.out.println("Você concluiu o nível! Voltando ao menu...");
@@ -66,38 +78,36 @@ public class Guess {
                 }
             }
 
-            // Verifica se a palavra já foi adivinhada
+            // Check if the word has already been guessed
             if (game.getGuessedWords().contains(input)) {
                 System.out.println("Essa palavra já foi adivinhada. Tente outra.");
-                continue; // Volta ao início do loop
+                continue; // Return to the start of the loop
             }
 
-            // Verifica se a palavra pode ser formada com as letras disponíveis
+            // Check if the word can be formed with the available characters
             if (!canFormWord(input)) {
                 System.out.println("A palavra não pode ser formada com as letras disponíveis.");
-                continue; // Volta ao início do loop
+                continue; // Return to the start of the loop
             }
 
-            // Verifica se a palavra é válida
+            // Check if the word is valid
             if (level.isCorrectWord(input)) {
-                // Normaliza as selectedWords para maiúsculas antes de comparar
+                // Normalize selectedWords to uppercase before comparison
                 List<String> selectedWordsUpper = new ArrayList<>();
                 for (String word : level.getSelectedWords()) {
                     selectedWordsUpper.add(word.toUpperCase());
                 }
 
-                // Verifica se a palavra é uma das palavras exibidas (selectedWords)
+                // Check if the word is one of the selectedWords
                 if (selectedWordsUpper.contains(input)) {
-                    System.out.println("Parabéns! Palavra certa: " + input); // Mensagem para selectedWords
-                    game.getEconomy().addCoins(10); // Adiciona 10 moedas por palavra correta
-                    game.getGuessedWords().add(input); // Adiciona a palavra à lista de palavras adivinhadas
+                    System.out.println("Parabéns! Palavra certa: " + input);
+                    game.getEconomy().addCoins(10); // Add 10 coins for correct guess
+                    game.getGuessedWords().add(input); // Add to guessed words list
                     System.out.println("Moedas acumuladas: " + game.getEconomy().getCoins());
-                }
-                // Verifica se a palavra é válida, mas não é uma das exibidas
-                else if (!validWordsDiscovered.contains(input)) {
-                    System.out.println("Parabéns! Palavra descoberta: " + input); // Mensagem para palavras válidas não exibidas
-                    game.getEconomy().addCoins(10); // Adiciona 10 moedas por palavra válida
-                    validWordsDiscovered.add(input); // Armazena a palavra para evitar repetições
+                } else if (!validWordsDiscovered.contains(input)) {
+                    System.out.println("Parabéns! Palavra descoberta: " + input);
+                    game.getEconomy().addCoins(10); // Add 10 coins for valid discovery
+                    validWordsDiscovered.add(input); // Add to discovered list
                     System.out.println("Moedas acumuladas: " + game.getEconomy().getCoins());
                 } else {
                     System.out.println("Palavra descoberta anteriormente: " + input);
@@ -106,7 +116,7 @@ public class Guess {
                 System.out.println("Palavra inválida. Tente outra.");
             }
 
-            // Verifica novamente se o nível foi concluído após adivinhar uma palavra
+            // Recheck if the level is completed after processing the guess
             if (hasCompletedLevel()) {
                 return true; // Nível concluído
             }

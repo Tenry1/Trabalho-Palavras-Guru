@@ -85,6 +85,8 @@ public class Game {
         return this.levels;
     }
 
+    public int getCurrentLevel() {return this.currentLevel;}
+
     public List<String> getGuessedWords() {
         return this.guessedWords;
     }
