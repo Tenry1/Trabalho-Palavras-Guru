@@ -94,10 +94,10 @@ public class Play {
 
         if (completedLevels == totalLevels) {
             System.out.println("Todos os níveis foram concluídos! Parabéns!");
-            game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo
+            //game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo
         } else {
             System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
-            game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo - mesmo que inacabado
+            //game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo - mesmo que inacabado
         }
     }
 
