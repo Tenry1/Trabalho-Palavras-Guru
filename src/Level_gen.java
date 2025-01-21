@@ -1,22 +1,22 @@
 import java.util.*;
 
 public class Level_gen implements Level_interface {
-    private final int MIN_WORDS = 2; // Número mínimo de palavras por nível
-    private final int MAX_WORDS = 5; // Número máximo de palavras por nível
+    private final int MIN_WORDS = 1; // Número mínimo de palavras obrigatórias
+    private final int MAX_WORDS = 4; // Número máximo de palavras obrigatórias
     private final int MIN_WORD_LENGTH = 2; // Comprimento mínimo das palavras
 
     private Map<Character, Integer> availableCharacters;
     private List<Character> availableLettersOrder; // Armazena a ordem das letras
-    private List<String> selectedWords;
-    private List<String> correctWords;
+    private List<String> selectedWords; // Palavras obrigatórias para passar de nível
+    private List<String> correctWords; // Todas as subpalavras válidas (dão moedas, mas não são obrigatórias)
 
     public Level_gen(Dictionary dictionary) {
         try {
             // Seleciona uma palavra aleatória do dicionário
             String randomWord = dictionary.selectRandomWord();
 
-            // Remove espaços da palavra principal e converte para maiúsculas
-            String cleanedWord = randomWord.replaceAll(" ", "").toUpperCase();
+            // Remove converte para maiúsculas
+            String cleanedWord = randomWord.toUpperCase();
 
             // Obtém os caracteres disponíveis e suas quantidades
             this.availableCharacters = getCharAmount(cleanedWord);
@@ -27,19 +27,23 @@ public class Level_gen implements Level_interface {
                 availableLettersOrder.add(c);
             }
 
-            // Encontra subpalavras válidas a partir da palavra principal
+            // Encontra todas as subpalavras válidas a partir da palavra principal
             List<String> allSubWords = dictionary.findSubWords(randomWord);
 
             // Filtra as subpalavras para incluir apenas aquelas com pelo menos 2 caracteres
             allSubWords.removeIf(word -> word.length() < MIN_WORD_LENGTH);
 
-            // Inicializa a lista de palavras selecionadas
+            // Todas as subpalavras válidas são as correctWords
+            this.correctWords = new ArrayList<>(allSubWords);
+
+            // Inicializa a lista de palavras selecionadas (obrigatórias)
             this.selectedWords = new ArrayList<>();
 
-            // Adiciona subpalavras à lista de palavras selecionadas
+            // Escolhe um número aleatório de palavras obrigatórias (entre MIN_WORDS e MAX_WORDS)
             Random random = new Random();
-            int numberOfWords = random.nextInt(MAX_WORDS - MIN_WORDS + 1) + MIN_WORDS; // Número de palavras entre MIN_WORDS e MAX_WORDS
+            int numberOfWords = random.nextInt(MAX_WORDS - MIN_WORDS + 1) + MIN_WORDS;
 
+            // Adiciona palavras aleatórias de correctWords à lista de palavras obrigatórias
             while (selectedWords.size() < numberOfWords && !allSubWords.isEmpty()) {
                 int index = random.nextInt(allSubWords.size());
                 String word = allSubWords.get(index);
@@ -51,9 +55,6 @@ public class Level_gen implements Level_interface {
 
             // Ordena as palavras selecionadas alfabeticamente
             selectedWords.sort(String::compareTo);
-
-            // A lista de palavras válidas é a mesma que as palavras selecionadas
-            this.correctWords = new ArrayList<>(selectedWords);
         } catch (Exception e) {
             System.err.println("Erro ao criar o nível: " + e.getMessage());
         }
@@ -70,7 +71,7 @@ public class Level_gen implements Level_interface {
 
     @Override
     public List<String> getSelectedWords() {
-        return selectedWords;
+        return selectedWords; // Retorna as palavras obrigatórias
     }
 
     @Override
@@ -87,11 +88,6 @@ public class Level_gen implements Level_interface {
         return charCount;
     }
 
-    // Verifica se uma palavra está na lista de palavras selecionadas
-    public boolean isSelectedWord(String word) {
-        return selectedWords.contains(word);
-    }
-
     @Override
     public boolean isCorrectWord(String word) {
         // Normaliza a palavra (remove espaços e converte para maiúsculas)
@@ -103,10 +99,10 @@ public class Level_gen implements Level_interface {
             return false;
         }
 
-        // Passo 2: Verifica se a palavra está na lista de palavras válidas
+        // Passo 2: Verifica se a palavra está na lista de palavras válidas (correctWords)
         for (String correctWord : correctWords) {
             if (correctWord.trim().toUpperCase().equals(normalizedWord)) {
-                return true;
+                return true; // A palavra é válida (dá moedas, mas não é obrigatória)
             }
         }
 
@@ -116,7 +112,7 @@ public class Level_gen implements Level_interface {
 
     @Override
     public Map<Character, Integer> getAvailableCharacters() {
-        return availableCharacters; // Return the map of available characters
+        return availableCharacters; // Retorna o mapa de caracteres disponíveis
     }
 
     // Verifica se a palavra pode ser formada com as letras disponíveis
@@ -140,5 +136,4 @@ public class Level_gen implements Level_interface {
 
         return true; // A palavra pode ser formada
     }
-
 }
