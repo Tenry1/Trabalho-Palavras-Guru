@@ -1,14 +1,15 @@
 Part 1 - Game flow 
---> Format             - 1a linha - letras do nível; subsequentes - palavras a adivinhar aka valem x10 moedas
---> Carregar níveis    - do ficheiro ficheiro-niveis.txt
---> Save state         - saves game level, words in level guessed
---> Econ               - each word = x10 coins; 1 tip = x100 coins
+[DONE] Format               - 1a linha - letras do nível; subsequentes - palavras a adivinhar aka valem x10 moedas
+[DONE] Carregar níveis         - do ficheiro ficheiro-niveis.txt
+--> Save state              - saves game level, words in level guessed
+--> Econ                    - each word = x10 coins; 1 tip = x100 coins
+
 Part 2 - Dictionary use
---> Palavras válidas   - portuguese-large.txt
+--> Palavras válidas        - portuguese-large.txt
 --> Se num nível, uma palavra não esteja nas soluções possíveis, dar x10 moedas; Adicionar a uma lista, para que se acontecer de novo com a mesma palavra, não dar moedas
+
 Part 3 - Dictionary Level Gen
---> Escolher letras    - verificar que palavras são possíveis, escolha random entre vogais e consoantes, não há palavras sem vogais, letras podem repetir.
-  OU
---> Escolher palavra   - trabalhar à volta das sub-palavras e suas letras. ex: armamento -> arma, armar, ama, amo, etc.
-Part 4 - Interface 
+[DONE] Escolher palavra     - trabalhar à volta das sub-palavras e suas letras. ex: armamento -> arma, armar, ama, amo, etc.
+
+Part 4 - Interface
 --> use swing?

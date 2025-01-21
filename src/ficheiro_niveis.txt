@@ -15,6 +15,7 @@ UMA
 A R P A
 AR
 PARA
+PAR
 
 C A L E S
 CAL
