@@ -3,7 +3,7 @@ import java.util.*;
 public class Play {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int op = 0;
+        int op;
         Game game = new Game();
 
         // Menu de seleção de modo de jogo
@@ -94,10 +94,10 @@ public class Play {
 
         if (completedLevels == totalLevels) {
             System.out.println("Todos os níveis foram concluídos! Parabéns!");
-            game.getEconomy().setCoins(0); // Resetar moedas depois de cada jogo
+            game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo
         } else {
             System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
-            game.getEconomy().setCoins(0); // Resetar moedas depois de cada jogo
+            game.getEconomy().setCoins(0); // Reset moedas depois de cada jogo - mesmo que inacabado
         }
     }
 
