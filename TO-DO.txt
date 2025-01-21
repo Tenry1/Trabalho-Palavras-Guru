@@ -5,8 +5,8 @@ Part 1 - Game flow
 --> Econ                    - each word = x10 coins; 1 tip = x100 coins
 
 Part 2 - Dictionary use
---> Palavras válidas        - portuguese-large.txt
---> Se num nível, uma palavra não esteja nas soluções possíveis, dar x10 moedas; Adicionar a uma lista, para que se acontecer de novo com a mesma palavra, não dar moedas
+[DONE] Palavras válidas        - portuguese-large.txt
+[DONE] Se num nível, uma palavra não esteja nas soluções possíveis, dar x10 moedas; Adicionar a uma lista, para que se acontecer de novo com a mesma palavra, não dar moedas
 
 Part 3 - Dictionary Level Gen
 [DONE] Escolher palavra     - trabalhar à volta das sub-palavras e suas letras. ex: armamento -> arma, armar, ama, amo, etc.

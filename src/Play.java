@@ -27,11 +27,11 @@ public class Play {
             switch (op) {
                 case 1:
                     System.out.println("Modo selecionado: Níveis pré-feitos");
-                    playPreMadeLevels(game, sc); // Inicia o jogo com níveis pré-feitos
+                    playLevels(game, true); // Inicia o jogo com níveis pré-feitos
                     break;
                 case 2:
                     System.out.println("Modo selecionado: Níveis gerados");
-                    playGeneratedLevels(game, sc); // Inicia o jogo com níveis gerados
+                    playLevels(game, false); // Inicia o jogo com níveis gerados
                     break;
                 case 3:
                     System.out.println("Carregando jogo salvo...");
@@ -47,37 +47,17 @@ public class Play {
         }
     }
 
-    private static void playPreMadeLevels(Game game, Scanner sc) {
-        game.loadLevels(); // Carrega os níveis do arquivo
+    private static void playLevels(Game game, boolean isPreMade) {
+        if (isPreMade) {
+            game.loadLevels(); // Carrega os níveis pré-feitos
+        } else {
+            game.generateLevels(); // Gera os níveis
+        }
+
+        int totalLevels = game.getLevels().size();
+        int completedLevels = 0;
 
         // Itera sobre os níveis armazenados no mapa
-        for (Map.Entry<Integer, Level_interface> entry : game.getLevels().entrySet()) {
-            Level_interface level = entry.getValue();
-            System.out.println("Nível " + entry.getKey() + ":");
-            System.out.println("Letras disponíveis: " + level.getAvailableLetters());
-            System.out.println("Palavras:");
-            for (String word : level.getSelectedWords()) {
-                System.out.println(level.getWordRepresentation(word));
-            }
-
-            // Cria uma instância de Guess para gerenciar a interação com o nível
-            Guess guess = new Guess(level, game);
-            guess.makeGuess(); // Inicia o loop de tentativas
-
-            // Verifica se o jogador completou o nível
-            if (guess.hasCompletedLevel()) {
-                System.out.println("Nível " + entry.getKey() + " concluído!");
-            } else {
-                System.out.println("Nível " + entry.getKey() + " não foi concluído. Voltando ao menu...");
-                break; // Sai do loop e volta ao menu
-            }
-        }
-    }
-
-    private static void playGeneratedLevels(Game game, Scanner sc) {
-        game.generateLevels(); // Gera os níveis
-
-        // Itera sobre os níveis gerados
         for (Map.Entry<Integer, Level_interface> entry : game.getLevels().entrySet()) {
             int levelNumber = entry.getKey();
             Level_interface level = entry.getValue();
@@ -94,7 +74,7 @@ public class Play {
             System.out.println(level.getSelectedWords());
 
             // Limpa a lista de palavras adivinhadas antes de iniciar o nível
-            game.getGuessedWords().clear();
+            game.getGuessedWords().clear(); // <-- Limpa a lista antes de cada nível
 
             // Cria uma instância de Guess para gerenciar a interação com o nível
             Guess guess = new Guess(level, game);
@@ -104,32 +84,19 @@ public class Play {
 
             // Verifica se o nível foi concluído
             if (levelCompleted) {
-                System.out.print("");
+                System.out.println("Nível " + levelNumber + " concluído!");
+                completedLevels++; // Incrementa o contador de níveis concluídos
             } else {
-                System.out.print("");
+                System.out.println("Nível " + levelNumber + " não foi concluído. Voltando ao menu...");
                 break; // Sai do loop e volta ao menu
             }
         }
 
-        // Verifica se todos os níveis foram concluídos
-        if (allLevelsCompleted(game)) {
-            System.out.println("Todos os níveis gerados foram concluídos! Parabéns!");
+        if (completedLevels == totalLevels) {
+            System.out.println("Todos os níveis foram concluídos! Parabéns!");
         } else {
             System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
         }
-    }
-
-    // Helper method to check if all levels are completed
-    private static boolean allLevelsCompleted(Game game) {
-        for (Map.Entry<Integer, Level_interface> entry : game.getLevels().entrySet()) {
-            Level_interface level = entry.getValue();
-            for (String word : level.getSelectedWords()) {
-                if (!game.getGuessedWords().contains(word)) {
-                    return false; // There are unguessed words remaining
-                }
-            }
-        }
-        return true; // All words in all levels have been guessed
     }
 
 }
