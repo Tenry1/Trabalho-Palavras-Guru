@@ -1,9 +1,10 @@
 import java.util.*;
 
 public interface Level_interface {
-    String getAvailableLetters(); // Returns available letters as a string
-    List<String> getSelectedWords(); // Returns the selected words
-    String getWordRepresentation(String word); // Returns the visual representation of a word
-    boolean isCorrectWord(String word); // Verifies if a word is valid
-    Map<Character, Integer> getAvailableCharacters(); // Returns available characters with their counts
+    String getAvailableLetters(); // Retorna as letras disponíveis como uma string
+    List<String> getSelectedWords(); // Retorna as palavras selecionadas
+    String getWordRepresentation(String word); // Retorna a representação visual de uma palavra
+    boolean isCorrectWord(String word); // Verifica se uma palavra é válida
+    Map<Character, Integer> getAvailableCharacters(); // Retorna os caracteres disponíveis com suas contagens
+    boolean isValidWordLength(String word); // Verifica se o comprimento da palavra é válido
 }

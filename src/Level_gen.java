@@ -89,9 +89,30 @@ public class Level_gen implements Level_interface {
     }
 
     @Override
+    public boolean isValidWordLength(String word) {
+        // Obtém o comprimento da palavra inserida
+        int wordLength = word.trim().length();
+
+        // Verifica se o comprimento da palavra corresponde ao comprimento de uma das selectedWords
+        for (String selectedWord : selectedWords) {
+            if (selectedWord.length() == wordLength) {
+                return true; // O comprimento é válido
+            }
+        }
+
+        return false; // O comprimento não é válido
+    }
+
+    @Override
     public boolean isCorrectWord(String word) {
         // Normaliza a palavra (remove espaços e converte para maiúsculas)
         String normalizedWord = word.trim().toUpperCase();
+
+        // Verifica se o comprimento da palavra é válido
+        if (!isValidWordLength(normalizedWord)) {
+            System.out.println("A palavra deve ter o mesmo comprimento de uma das palavras a adivinhar.");
+            return false;
+        }
 
         // Passo 1: Verifica se a palavra pode ser formada com as letras disponíveis
         if (!canFormWord(normalizedWord)) {

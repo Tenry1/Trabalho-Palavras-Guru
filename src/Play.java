@@ -74,9 +74,9 @@ public class Play {
             System.out.println(level.getSelectedWords());
 
             // Limpa a lista de palavras adivinhadas antes de iniciar o nível
-            game.getGuessedWords().clear(); // <-- Limpa a lista antes de cada nível
+            game.getGuessedWords().clear(); // Limpa a lista antes de cada nível
 
-            // Cria uma instância de Guess para gerenciar a interação com o nível
+            // Cria uma instância de Guess para gerir a interação com o nível
             Guess guess = new Guess(level, game);
 
             // Inicia o loop de tentativas
@@ -94,8 +94,10 @@ public class Play {
 
         if (completedLevels == totalLevels) {
             System.out.println("Todos os níveis foram concluídos! Parabéns!");
+            game.getEconomy().setCoins(0); // Resetar moedas depois de cada jogo
         } else {
             System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
+            game.getEconomy().setCoins(0); // Resetar moedas depois de cada jogo
         }
     }
 
