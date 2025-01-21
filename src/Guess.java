@@ -47,8 +47,13 @@ public class Guess {
                 return true; // Nível concluído
             }
 
-            System.out.print("Digite uma palavra (pressione 'Enter' para voltar ao menu): ");
+            System.out.print("Digite uma palavra \n(pressione 'Enter' para voltar ao menu)\n(pressione 'T' para uma dica): ");
             String input = sc.nextLine().trim().toUpperCase(); // Converte para maiúsculas
+
+            if (input.equals("T")) {
+                askForHint();
+                continue;
+            }
 
             // Se o input estiver vazio (usuário pressionou Enter)
             if (input.isEmpty()) {
@@ -75,8 +80,6 @@ public class Guess {
 
             // Verifica se a palavra é válida
             if (level.isCorrectWord(input)) {
-                System.out.println("palavra válida");
-
                 // Normaliza as selectedWords para maiúsculas antes de comparar
                 List<String> selectedWordsUpper = new ArrayList<>();
                 for (String word : level.getSelectedWords()) {
@@ -108,6 +111,52 @@ public class Guess {
                 return true; // Nível concluído
             }
         }
+    }
+
+    public void askForHint() {
+        Scanner sc = new Scanner(System.in);
+
+        // Verifica se o jogador tem moedas suficientes
+        if (game.getEconomy().getCoins() < 100) {
+            System.out.println("Você não tem moedas suficientes para pedir uma dica. Moedas necessárias: 100");
+            return;
+        }
+
+        // Exibe as palavras disponíveis para dicas
+        System.out.println("Escolha uma palavra para receber uma dica:");
+        List<String> selectedWords = level.getSelectedWords();
+        for (int i = 0; i < selectedWords.size(); i++) {
+            System.out.println((i + 1));
+        }
+
+        // O jogador escolhe uma palavra
+        int wordChoice = sc.nextInt();
+        sc.nextLine(); // Limpa o buffer do scanner
+
+        if (wordChoice < 1 || wordChoice > selectedWords.size()) {
+            System.out.println("Escolha inválida. Tente novamente.");
+            return;
+        }
+
+        String chosenWord = selectedWords.get(wordChoice - 1).toUpperCase();
+
+        // O jogador escolhe uma posição da palavra
+        System.out.println("Escolha uma posição da palavra (1 a " + chosenWord.length() + "):");
+        int position = sc.nextInt();
+        sc.nextLine(); // Limpa o buffer do scanner
+
+        if (position < 1 || position > chosenWord.length()) {
+            System.out.println("Posição inválida. Tente novamente.");
+            return;
+        }
+
+        // Revela a letra na posição escolhida
+        char revealedLetter = chosenWord.charAt(position - 1);
+        System.out.println("A letra na posição " + position + " é: " + revealedLetter);
+
+        // Deduz 100 moedas do saldo do jogador
+        game.getEconomy().removeCoins(100);
+        System.out.println("100 moedas foram deduzidas. Moedas restantes: " + game.getEconomy().getCoins());
     }
 
     public boolean hasCompletedLevel() {
