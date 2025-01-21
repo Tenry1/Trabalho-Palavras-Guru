@@ -2,7 +2,8 @@ Part 1 - Game flow
 [DONE] Format               - 1a linha - letras do nível; subsequentes - palavras a adivinhar aka valem x10 moedas
 [DONE] Carregar níveis         - do ficheiro ficheiro-niveis.txt
 --> Save state              - saves game level, words in level guessed
---> Econ                    - each word = x10 coins; 1 tip = x100 coins
+[DONE] Econ                    - each word = x10 coins
+--> Tips                    - 1 tip = x100 coins, saber uma letra em especifico de uma palavra a descobrir em específico
 
 Part 2 - Dictionary use
 [DONE] Palavras válidas        - portuguese-large.txt
