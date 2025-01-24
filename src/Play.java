@@ -1,7 +1,20 @@
+import java.awt.*;
 import java.util.*;
 
 public class Play {
     public static void main(String[] args) {
+        Color[] color_pallete = {
+                new Color(240, 235, 216),
+                new Color(116, 140, 171),
+                new Color(62, 92, 118),
+                new Color(29, 45, 68),
+                new Color(13, 19, 33),
+        };
+
+        GUI gui = new GUI(640, 1024, color_pallete);
+        //gui.buildLevel(null, new Boolean[]{false, false, false, false});
+        gui.buildLevel(null, new Boolean[]{true, true, true, true});
+
         Scanner sc = new Scanner(System.in);
         int op;
         Game game = new Game();
