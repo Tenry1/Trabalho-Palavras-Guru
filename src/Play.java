@@ -12,8 +12,7 @@ public class Play {
         };
 
         GUI gui = new GUI(640, 1024, color_pallete);
-        //gui.buildLevel(null, new Boolean[]{false, false, false, false});
-        gui.buildLevel(null, new Boolean[]{true, true, true, true});
+        gui.buildLevel(null, new Boolean[]{false, false, false, false}, color_pallete);
 
         Scanner sc = new Scanner(System.in);
         int op;

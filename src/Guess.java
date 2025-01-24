@@ -56,7 +56,7 @@ public class Guess {
             }
 
             // Debug: Exibe as palavras que o jogador deve adivinhar
-            System.out.println(level.getSelectedWords());
+            //System.out.println(level.getSelectedWords());
 
             // Solicita a entrada do jogador
             System.out.print("Digite uma palavra \n(pressione 'Enter' para voltar ao menu)\n(pressione 'T' para uma dica)\n(pressione 'S' para salvar o jogo)\n(pressione 'L' para carregar o jogo): ");
