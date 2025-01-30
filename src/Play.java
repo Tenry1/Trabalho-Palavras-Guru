@@ -47,14 +47,7 @@ public class Play {
                     break;
                 case 3:
                     System.out.println("Carregando jogo salvo...");
-                    game.loadGame();
-                    Level_interface level = game.getLevels().get(game.getCurrentLevel());
-                    if (level != null) {
-                        Guess guess = new Guess(level, game);
-                        guess.makeGuess(); // Resume guessing from the saved state
-                    } else {
-                        System.err.println("Erro: Nível atual não encontrado após carregar o jogo.");
-                    }
+                    game.loadGame(); // Carrega o jogo salvo
                     break;
                 case 4:
                     System.out.println("Saindo do jogo...");
@@ -73,35 +66,37 @@ public class Play {
             game.generateLevels(); // Gera os níveis
         }
 
-        // Verifica se os níveis foram carregados/gerados corretamente
-        if (game.getLevels().isEmpty()) {
-            System.err.println("Erro: Nenhum nível foi carregado ou gerado.");
-            return;
+        int totalLevels = game.getLevels().size();
+        int completedLevels = 0;
+
+        // Itera sobre os níveis armazenados no mapa
+        for (Map.Entry<Integer, Level_interface> entry : game.getLevels().entrySet()) {
+            int levelNumber = entry.getKey();
+            Level_interface level = entry.getValue();
+
+            // Limpa a lista de palavras adivinhadas antes de iniciar o nível
+            game.getGuessedWords().clear(); // Limpa a lista antes de cada nível
+
+            // Cria uma instância de Guess para gerir a interação com o nível
+            Guess guess = new Guess(level, game);
+
+            // Inicia o loop de tentativas
+            boolean levelCompleted = guess.makeGuess();
+
+            // Verifica se o nível foi concluído
+            if (levelCompleted) {
+                System.out.println("Nível " + levelNumber + " concluído!");
+                completedLevels++; // Incrementa o contador de níveis concluídos
+            } else {
+                System.out.println("Nível " + levelNumber + " não foi concluído. Voltando ao menu...");
+                break; // Sai do loop e volta ao menu
+            }
         }
 
-        // Obtém o nível atual carregado
-        int currentLevel = game.getCurrentLevel();
-        Level_interface level = game.getLevels().get(currentLevel);
-
-        if (level == null) {
-            System.err.println("Erro: Nível atual não encontrado.");
-            return;
-        }
-
-        // Limpa a lista de palavras adivinhadas antes de iniciar o nível
-        game.getGuessedWords().clear(); // Limpa a lista antes de cada nível
-
-        // Cria uma instância de Guess para gerir a interação com o nível
-        Guess guess = new Guess(level, game);
-
-        // Inicia o loop de tentativas
-        boolean levelCompleted = guess.makeGuess();
-
-        // Verifica se o nível foi concluído
-        if (levelCompleted) {
-            System.out.println("Nível " + currentLevel + " concluído!");
+        if (completedLevels == totalLevels) {
+            System.out.println("Todos os níveis foram concluídos! Parabéns!");
         } else {
-            System.out.println("Nível " + currentLevel + " não foi concluído. Voltando ao menu...");
+            System.out.println("Alguns níveis não foram concluídos. Voltando ao menu...");
         }
     }
 
